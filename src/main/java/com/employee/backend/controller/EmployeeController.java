@@ -1,7 +1,7 @@
 package com.employee.backend.controller;
 
 import com.employee.backend.entities.Employee;
-import com.employee.backend.repositoties.EmployeeRepository;
+import com.employee.backend.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,25 +12,26 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
 
     @PostMapping("/add")
     public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+        return employeeService.addEmployee(employee);
     }
 
     @GetMapping("/all")
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return employeeService.getAllEmployees();
     }
 
     @PostMapping("/update/{id}")
-    public Employee updateEmployee(@RequestMapping Long id) {
-        return employeeRepository.save(id);
+    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
+        return employeeService.updateEmployee(id, employee);
     }
 
-    @DeleteMapping
-    public void deleteEmployee(@RequestBody Employee employee) {
-        employeeRepository.delete(employee);
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteEmployee(@PathVariable int id) {
+        employeeService.deleteEmployee(id);
     }
 }

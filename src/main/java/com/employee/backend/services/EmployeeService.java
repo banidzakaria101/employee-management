@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmployeeServices {
+public class EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -26,8 +26,19 @@ public class EmployeeServices {
         return employeeRepository.findById(id).get();
     }
 
-    public Employee updateEmployee(Employee employee) {
-        return employeeRepository.save(employee);
+
+    public Employee updateEmployee(int id, Employee employee) {
+        Employee existingEmployee = employeeRepository.findById(id).orElse(null);
+
+        if (existingEmployee != null) {
+            existingEmployee.setFirstName(employee.getFirstName());
+            existingEmployee.setLastName(employee.getLastName());
+            existingEmployee.setEmail(employee.getEmail());
+
+            return employeeRepository.save(existingEmployee);
+        } else {
+            throw new RuntimeException("Employee not found with id: " + id);
+        }
     }
 
     public void deleteEmployee(int id) {
