@@ -1,48 +1,56 @@
 <div class="card">
     <p-table [value]="employees" dataKey="id" [tableStyle]="{'min-width': '50rem'}">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last name</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </ng-template>
-        <ng-tamplate pTemplate="body" let-employee>
-            <tr>
-                <td>{{employee.id}}</td>
-                <td>{{employee.firsName}}</td>
-                <td>{{employee.lastName}}</td>
-                <td>{{employee.email}}</td>
-                <td>
-                    <p-button icon="pi pi-pencil" (click)="editEmployee(employee)" class="mr-2"></p-button>
-                    <p-button icon="pi pi-trash" sevrety="danger" (click)="deleteEmployee(employee)"></p-button>
-                </td>
-            </tr>
-        </ng-tamplate>    
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-employee>
+        <tr>
+          <td>{{employee.id}}</td>
+          <td>{{employee.firstName}}</td>
+          <td>{{employee.lastName}}</td>
+          <td>{{employee.email}}</td>
+          <td>
+            <p-button icon="pi pi-pencil" (click)="editEmployee(employee)" class="mr-2"></p-button>
+            <p-button icon="pi pi-trash" severity="danger" (click)="deleteEmployee(employee)"></p-button>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
 
     <p-button label="Add New Employee" (click)="openNewEmployeeDialog()"></p-button>
 
-    <p-dialog header="Employee Details"
-    [(visible)]="employeeDialog"
-    [modal]="true"
-    [stle]="{width: '450px'}">
-    <div class="field">
+    <p-dialog 
+      header="Employee Details" 
+      [(visible)]="employeeDialog" 
+      [modal]="true" 
+      [style]="{width: '450px'}"
+    >
+      <div class="field">
         <label for="firstName">First Name</label>
-        <input pInputText id="firstName" [(ngModule)]="currentEmployee.firstName" required />
-    </div>
-    <div class="field">
-        <label for="lastName"></label>
-        <input pInputText id="lastName" [(ngModule)]="currentEmployee.lastName" required />
-    </div>
-    <div class="field">
-        <label for="Email">Email</label>
-        <input pInputText id="email" [(ngModule)]="currentEmployee.email" required />
-    </div>
-    <ng-template pTemplate="footer">
-        <p-button label="Cancel" icon="pi pi-times" (click)=" "
-    </ng-template>
-    
-</div>
+        <input pInputText id="firstName" [(ngModel)]="currentEmployee.firstName" required />
+      </div>
+      <div class="field">
+        <label for="lastName">Last Name</label>
+        <input pInputText id="lastName" [(ngModel)]="currentEmployee.lastName" required />
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input pInputText id="email" [(ngModel)]="currentEmployee.email" required />
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" (click)="employeeDialog = false"></p-button>
+        <p-button 
+          label="Save" 
+          icon="pi pi-check" 
+          (click)="saveEmployee()"
+          [disabled]="!isFormValid()"
+        ></p-button>
+      </ng-template>
+    </p-dialog>
+  </div>

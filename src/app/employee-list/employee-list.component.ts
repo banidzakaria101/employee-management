@@ -40,8 +40,14 @@ export class EmployeeListComponent implements OnInit{
     this.employeeDialog = true;
   }
 
-  editEmployee() {
-    if(this.isEditing && this.currentEmployee.id) {
+  editEmployee(employee: Employee) {
+    this.currentEmployee = {...employee};
+    this.isEditing = true;
+    this.employeeDialog = true;
+  }
+
+  saveEmployee() {
+    if (this.isEditing && this.currentEmployee.id) {
       this.employeeService.updateEmployee(this.currentEmployee.id, this.currentEmployee).subscribe({
         next: () => {
           this.loadEmployees();
@@ -49,18 +55,27 @@ export class EmployeeListComponent implements OnInit{
         },
         error: (err) => console.error('Error updating employee', err)
       });
-    }else {
+    } else {
       this.employeeService.addEmployee(this.currentEmployee).subscribe({
         next: () => {
           this.loadEmployees();
           this.employeeDialog = false;
         },
         error: (err) => console.error('Error adding employee', err)
-      });
+      })
     }
   }
 
-  isFomValid(): boolean {
+  deleteEmployee(employee: Employee) {
+    if(employee.id) {
+      this.employeeService.deleteEmployee(employee.id).subscribe({
+        next: () => this.loadEmployees(),
+        error:(err) => console.error('Error deleting employee', err)
+      })
+    }
+  }
+
+  isFormValid(): boolean {
     return !!(
       this.currentEmployee.firstName &&
       this.currentEmployee.lastName &&

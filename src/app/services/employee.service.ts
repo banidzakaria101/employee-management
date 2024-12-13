@@ -23,7 +23,7 @@ export class EmployeeService {
     return this.http.put<Employee>(`${this.baseUrl}/update/${id}`, employee);
   }
 
-  deleteEùployee(id: number): Observable<void> {
+  deleteEmployee(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
   }
 }
